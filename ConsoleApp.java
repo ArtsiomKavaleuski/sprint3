@@ -1,29 +1,45 @@
 public class ConsoleApp {
-	public static void main(String[] args) {
-		String symbol = "*";
-		
-		int width = 10;
-		int height = 5;
-		
-		 if (args.length > 0) {
-            for (int i = 0; i < args.length; i += 2) {
-                // в чётных элементах массива находятся названия аргументов, в нечётных — значения
-                String key = args[i];
-                String value = args[i + 1];
 
-                if (key.equals("--width")) {
-                    width = Integer.parseInt(value);
-                } else if (key.equals("--height")) {
-                    height = Integer.parseInt(value);
+    public static void main(String[] args) {
+        String symbol = "*";
+
+        // проставляем значения по умолчанию
+        int width = 10;
+        int height = 5;
+        boolean needBorder = false;
+        String borderSymbolVertical = "|";
+		String borderSymbolGorisontal = "-";
+
+        if (args.length > 0) {
+            for (int i = 0; i < args.length; i += 1) {
+                String token = args[i];
+
+                if (token.equals("--width")) {
+                    width = Integer.parseInt(args[i + 1]);
+                } else if (token.equals("--height")) {
+                    height = Integer.parseInt(args[i + 1]);
+                } else if (token.equals("--symbol")) {
+				symbol = args[i + 1].toString();
+				} else if (token.equals("--border")) {
+                    needBorder = true;
                 }
             }
         }
-		
-		for (int i = 1; i <= height; i++) {
-			for (int j = 1; j <= width; j++) {
-				System.out.print(symbol);
-			}
-			System.out.println();
-		}
-	}
+
+        for (int i = 1; i <= height; i++) {
+            for (int j = 1; j <= width; j++) {
+                // если нужна рамка, первый и последний символы в каждой строке и столбце становятся рамкой
+                if ( needBorder
+                        && ( i == 1 || i == height)) {
+                    System.out.print(borderSymbolGorisontal);
+                } else if (needBorder
+                        && ( j == 1 || j == width)) {
+					System.out.print(borderSymbolVertical);
+				} else {
+                    System.out.print(symbol);
+                }
+            }
+            System.out.println();
+        }
+    }
 }
